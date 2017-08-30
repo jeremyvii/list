@@ -14,12 +14,12 @@ typedef struct {
 static Options options;
 
 /**
-* Checks if string is valid
-*
-* @param  char* str Pointer to string to check
-*
-* @return int       True if string is valid otherwise false
-*/
+ * Checks if string is valid
+ *
+ * @param  char* str Pointer to string to check
+ *
+ * @return int       True if string is valid otherwise false
+ */
 int checkString(char* str) {
   // Get strings length
   int length = strlen(str);
@@ -41,25 +41,30 @@ int checkString(char* str) {
 }
 
 /**
-* Checks if string is "." or ".."
-*
-* @param  char* str Pointer to string to check
-*
-* @return int       True if file is "." or ".." otherwise false
-*/
+ * Checks if string is "." or ".."
+ *
+ * @param  char* str Pointer to string to check
+ *
+ * @return int       True if file is "." or ".." otherwise false
+ */
 int isDot(char* str) {
-  return strcmp(str, ".") == 0 || strcmp(str, "..") == 0 || str[0] == '.';
+  int result;
+  if (options.all) {
+    result = 0;
+  } else {
+    result = strcmp(str, ".") == 0 || strcmp(str, "..") == 0 || str[0] == '.';
+  }
+  return result;
 }
 
 /**
-* Print contents of directory
-*
-* @param  char* dirName Pointer to directory name to open
-*
-* @return void
-*/
+ * Print contents of directory
+ *
+ * @param  char* dirName Pointer to directory name to open
+ *
+ * @return void
+ */
 void printDirectoryContents(char* dirName) {
-  printf("%s\n", dirName);
   // Create new directory object
   struct dirent **namelist;
   // Scan directory contents alphabetically
@@ -72,7 +77,7 @@ void printDirectoryContents(char* dirName) {
   // Iterate over directory contents
   for (int i = 0; i < dir; i++) {
     // Check if file is "." or ".."
-    if (!options.all && isDot(namelist[i]->d_name)) {
+    if (isDot(namelist[i]->d_name)) {
       // Don't print "." or ".."
     } else {
       // Print file names
