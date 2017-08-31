@@ -43,14 +43,17 @@ int checkString(char* str) {
 }
 
 /**
- * Checks if string is "." or ".."
+ * Checks if string is ".", ".." or a hidden file. Results vary depending on
+ * options provided to command
  *
  * @param  char* str Pointer to string to check
  *
  * @return int       True if file is "." or ".." otherwise false
  */
 int isDot(char* str) {
-  int result;
+  // Number for result recieved (should be 0 or 1)
+  unsigned int result;
+  // Check which option was passed
   if (options.all) {
     result = 0;
   } else if (options.almost_all) {
@@ -70,7 +73,7 @@ int isDot(char* str) {
  */
 void printDirectoryContents(char* dirName) {
   // Create new directory object
-  struct dirent **namelist;
+  struct dirent** namelist;
   // Scan directory contents alphabetically
   int dir = scandir(dirName, &namelist, NULL, alphasort);
   // Check if directory exists
@@ -99,14 +102,15 @@ int main(int argc, char** argv) {
   int c;
   // Set option error to 0
   opterr = 0;
-  int index;
   // Iterate over options provided
   while ((c = getopt(argc, argv, ":aA:")) != -1) {
     // Check which options were passed
     switch (c) {
+      // Display all case
       case 'a':
         options.all = 1;
         break;
+      // Display almost all case
       case 'A':
         options.almost_all = 1;
         break;
@@ -115,9 +119,12 @@ int main(int argc, char** argv) {
         break;
     }
   }
+  // Check if directory name passed is printable and isn't empty
   if (checkString(argv[argc - 1]) && strlen(argv[argc - 1]) ) {
+    // Print directory
     printDirectoryContents(argv[argc - 1]);
   } else {
+    // Display invalid input error
     printf("Input provided is invalid.\n");
     exit(1);
   }
