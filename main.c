@@ -9,6 +9,8 @@
 typedef struct {
   // Display all hidden files and folders in a directory
   unsigned int all;
+  // Display all hiddens files but "." and ".."
+  unsigned int almost_all;
 } Options;
 
 static Options options;
@@ -51,6 +53,8 @@ int isDot(char* str) {
   int result;
   if (options.all) {
     result = 0;
+  } else if (options.almost_all) {
+    result = strcmp(str, ".") == 0 || strcmp(str, "..") == 0;
   } else {
     result = strcmp(str, ".") == 0 || strcmp(str, "..") == 0 || str[0] == '.';
   }
@@ -103,15 +107,18 @@ int main(int argc, char** argv) {
       case 'a':
         options.all = 1;
         break;
+      case 'A':
+        options.almost_all = 1;
+        break;
       default:
         abort();
         break;
     }
   }
-  if (checkString(argv[optind - 1])) {
-    printDirectoryContents(argv[optind - 1]);
+  if (checkString(argv[argc - 1]) && strlen(argv[argc - 1]) ) {
+    printDirectoryContents(argv[argc - 1]);
   } else {
-    printf("Bad string!\n");
+    printf("Input provided is invalid.\n");
     exit(1);
   }
   return 0;
