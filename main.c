@@ -5,12 +5,15 @@
 #include <getopt.h>
 #include <string.h>
 #include <dirent.h>
+#include <sys/stat.h>
 
 typedef struct {
   // Display all hidden files and folders in a directory
-  unsigned int all;
+  unsigned char all;
   // Display all hiddens files but "." and ".."
-  unsigned int almost_all;
+  unsigned char almost_all;
+  // Only displays directories
+  unsigned char dir;
 } Options;
 
 static Options options;
@@ -40,6 +43,18 @@ int checkString(char* str) {
   }
   // No errors where found so return true
   return 1;
+}
+
+int isDir(char* str) {
+  if (options.dir) {
+    char dir[80] = "./";
+    strcat(dir, str);
+    struct stat sb;
+    printf("%s\n", dir);
+    printf("%d\n", stat(dir, &sb) == 0);
+    return stat(dir, &sb) == 0 && S_ISDIR(sb.st_mode);
+  }
+  return 0;
 }
 
 /**
@@ -86,6 +101,8 @@ void printDirectoryContents(char* dirName) {
     // Check if file is "." or ".."
     if (isDot(namelist[i]->d_name)) {
       // Don't print "." or ".."
+    } else if (isDir(namelist[i]->d_name)) {
+      // Don't display regular files if directory flag is set
     } else {
       // Print file names
       printf("%s\n", namelist[i]->d_name);
@@ -103,7 +120,7 @@ int main(int argc, char** argv) {
   // Set option error to 0
   opterr = 0;
   // Iterate over options provided
-  while ((c = getopt(argc, argv, ":aA:")) != -1) {
+  while ((c = getopt(argc, argv, ":aAd:")) != -1) {
     // Check which options were passed
     switch (c) {
       // Display all case
@@ -114,13 +131,16 @@ int main(int argc, char** argv) {
       case 'A':
         options.almost_all = 1;
         break;
+      case 'd':
+        options.dir = 1;
+        break;
       default:
         abort();
         break;
     }
   }
   // Check if directory name passed is printable and isn't empty
-  if (checkString(argv[argc - 1])) ) {
+  if (checkString(argv[argc - 1])) {
     // Print directory
     printDirectoryContents(argv[argc - 1]);
   } else {
