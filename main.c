@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     }
   }
   // Check if directory name passed is printable and isn't empty
-  if (checkString(argv[argc - 1]) && strlen(argv[argc - 1]) ) {
+  if (checkString(argv[argc - 1])) ) {
     // Print directory
     printDirectoryContents(argv[argc - 1]);
   } else {
