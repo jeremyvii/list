@@ -101,7 +101,7 @@ int main(int argc, char** argv) {
   opterr = 0;
   int index;
   // Iterate over options provided
-  while ((c = getopt(argc, argv, ":a:")) != -1) {
+  while ((c = getopt(argc, argv, ":aA:")) != -1) {
     // Check which options were passed
     switch (c) {
       case 'a':
