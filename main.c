@@ -19,7 +19,7 @@ typedef struct {
 static Options options;
 
 /**
- * Checks if string is valid
+ * Checks if string is printable and not empty
  *
  * @param  char* str Pointer to string to check
  *
@@ -69,10 +69,13 @@ int isDot(char* str) {
   // Number for result recieved (should be 0 or 1)
   unsigned int result;
   // Check which option was passed
+  // Display everything including hidden files and directories
   if (options.all) {
     result = 0;
+  // Display all hidden files and directories except "." and ".." 
   } else if (options.almost_all) {
     result = strcmp(str, ".") == 0 || strcmp(str, "..") == 0;
+  // Default case; Don't display hidden files and directories
   } else {
     result = strcmp(str, ".") == 0 || strcmp(str, "..") == 0 || str[0] == '.';
   }
