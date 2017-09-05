@@ -6,6 +6,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 typedef struct {
   // Display all hidden files and folders in a directory
@@ -47,7 +48,10 @@ int checkString(char* str) {
 
 int isDir(char* str) {
   if (options.dir) {
-    char dir[80] = "./";
+    // TODO: Set directory functionality
+    char currDir[1024];
+    getcwd(currDir, sizeof(currDir));
+    printf("%s\n", test);
     strcat(dir, str);
     struct stat sb;
     printf("%s\n", dir);
@@ -72,7 +76,7 @@ int isDot(char* str) {
   // Display everything including hidden files and directories
   if (options.all) {
     result = 0;
-  // Display all hidden files and directories except "." and ".." 
+  // Display all hidden files and directories except "." and ".."
   } else if (options.almost_all) {
     result = strcmp(str, ".") == 0 || strcmp(str, "..") == 0;
   // Default case; Don't display hidden files and directories
