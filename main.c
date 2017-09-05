@@ -19,6 +19,48 @@ typedef struct {
 
 static Options options;
 
+int  checkString   (char*);
+int  isDir         (char*);
+int  isDot         (char*);
+void printDirectory(char*);
+
+int main(int argc, char** argv) {
+  // Initialize opens integer
+  int c;
+  // Set option error to 0
+  opterr = 0;
+  // Iterate over options provided
+  while ((c = getopt(argc, argv, ":aAd:")) != -1) {
+    // Check which options were passed
+    switch (c) {
+      // Display all case
+      case 'a':
+        options.all = 1;
+        break;
+      // Display almost all case
+      case 'A':
+        options.almost_all = 1;
+        break;
+      case 'd':
+        options.dir = 1;
+        break;
+      default:
+        abort();
+        break;
+    }
+  }
+  // Check if directory name passed is printable and isn't empty
+  if (checkString(argv[argc - 1])) {
+    // Print directory
+    printDirectory(argv[argc - 1]);
+  } else {
+    // Display invalid input error
+    printf("Input provided is invalid.\n");
+    exit(1);
+  }
+  return 0;
+}
+
 /**
  * Checks if string is printable and not empty
  *
@@ -93,7 +135,7 @@ int isDot(char* str) {
  *
  * @return void
  */
-void printDirectoryContents(char* dirName) {
+void printDirectory(char* dirName) {
   // Create new directory object
   struct dirent** namelist;
   // Scan directory contents alphabetically
@@ -119,41 +161,4 @@ void printDirectoryContents(char* dirName) {
   }
   // Free file list from memory
   free(namelist);
-}
-
-int main(int argc, char** argv) {
-  // Initialize opens integer
-  int c;
-  // Set option error to 0
-  opterr = 0;
-  // Iterate over options provided
-  while ((c = getopt(argc, argv, ":aAd:")) != -1) {
-    // Check which options were passed
-    switch (c) {
-      // Display all case
-      case 'a':
-        options.all = 1;
-        break;
-      // Display almost all case
-      case 'A':
-        options.almost_all = 1;
-        break;
-      case 'd':
-        options.dir = 1;
-        break;
-      default:
-        abort();
-        break;
-    }
-  }
-  // Check if directory name passed is printable and isn't empty
-  if (checkString(argv[argc - 1])) {
-    // Print directory
-    printDirectoryContents(argv[argc - 1]);
-  } else {
-    // Display invalid input error
-    printf("Input provided is invalid.\n");
-    exit(1);
-  }
-  return 0;
 }
