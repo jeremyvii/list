@@ -26,6 +26,7 @@ int  checkString(char*);
 int  isDir      (char*);
 int  isDot      (char*);
 void list       (char*);
+void throwError (char*);
 
 int main(int argc, char** argv) {
   // Initialize opens integer
@@ -48,8 +49,7 @@ int main(int argc, char** argv) {
         options.dir = 1;
         break;
       default:
-        printf("Invalid options provided.");
-        exit(1);
+        throwError("Invalid options provided.");
         break;
     }
   }
@@ -59,8 +59,7 @@ int main(int argc, char** argv) {
     list(argv[argc - 1]);
   } else {
     // Display invalid input error
-    printf("Input provided is invalid.\n");
-    exit(1);
+    throwError("Input provided is invalid.");
   }
   return 0;
 }
@@ -145,10 +144,7 @@ void list(char* dirName) {
   // Scan directory contents alphabetically
   int dir = scandir(dirName, &namelist, NULL, alphasort);
   // Check if directory exists
-  if (dir == -1) {
-    perror("scandir");
-    exit(EXIT_FAILURE);
-  }
+  if (dir == -1) throwError("Directory does not exist!");
   // Iterate over directory contents
   for (int i = 0; i < dir; i++) {
     // Check if file is "." or ".."
@@ -165,4 +161,18 @@ void list(char* dirName) {
   }
   // Free file list from memory
   free(namelist);
+}
+
+/**
+ * Throws error message provided
+ *
+ * Prints message provided and exits with a status of 1
+ *
+ * @param  char* msg Error message to be printed
+ *
+ * @return void
+ */
+void throwError(char* msg) {
+  printf("%s\n", msg);
+  exit(1);
 }
