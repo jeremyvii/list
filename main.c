@@ -45,7 +45,8 @@ int main(int argc, char** argv) {
         options.dir = 1;
         break;
       default:
-        abort();
+        printf("Invalid options provided.");
+        exit(1);
         break;
     }
   }
