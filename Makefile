@@ -1,6 +1,16 @@
-FLAGS:= -g -std=c11 -Wall -Wextra -pedantic -fPIC -DDEBUG=0
+TARGET  = list
+CC      = gcc
+FLAGS   = -g -std=c11 -Wall -Wextra -pedantic -fPIC -DDEBUG=0
+OBJECTS = $(wildcard *.c)
 
-default: list
+.PHONY: default all clean
 
-list: 
-	gcc $(FLAGS) main.c
+default: $(TARGET)
+all: default
+
+$(TARGET):
+	$(CC) $(FLAGS) $(OBJECTS) -o $(TARGET)
+
+clean:
+	-rm -f *.o
+	-rm -f $(TARGET)

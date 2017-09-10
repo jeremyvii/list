@@ -1,3 +1,6 @@
+// Fix compilation errors regarding <dirent.h>
+#define _XOPEN_SOURCE 700
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -7,6 +10,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <errno.h>
+
 
 // This will be used for storing options based to command. 
 struct Options {
