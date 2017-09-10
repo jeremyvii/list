@@ -8,6 +8,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+// This will be used for storing options based to command. 
 struct Options {
   // Display all hidden files and folders in a directory
   unsigned char all;
@@ -17,8 +18,10 @@ struct Options {
   unsigned char dir;
 };
 
+// Create new instance of options struct
 static struct Options options;
 
+// Define function prototypes
 int  checkString   (char*);
 int  isDir         (char*);
 int  isDot         (char*);
