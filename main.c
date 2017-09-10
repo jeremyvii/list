@@ -89,17 +89,17 @@ int checkString(char* str) {
 }
 
 int isDir(char* str) {
-  if (options.dir) {
-    // TODO: Set directory functionality
-    char currDir[1024];
-    getcwd(currDir, sizeof(currDir));
-    printf("%s\n", test);
-    strcat(dir, str);
-    struct stat sb;
-    printf("%s\n", dir);
-    printf("%d\n", stat(dir, &sb) == 0);
-    return stat(dir, &sb) == 0 && S_ISDIR(sb.st_mode);
-  }
+  // if (options.dir) {
+  //   // TODO: Set directory functionality
+  //   char currDir[1024];
+  //   getcwd(currDir, sizeof(currDir));
+  //   printf("%s\n", test);
+  //   strcat(dir, str);
+  //   struct stat sb;
+  //   printf("%s\n", dir);
+  //   printf("%d\n", stat(dir, &sb) == 0);
+  //   return stat(dir, &sb) == 0 && S_ISDIR(sb.st_mode);
+  // }
   return 0;
 }
 
