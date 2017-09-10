@@ -8,16 +8,16 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-typedef struct {
+struct Options {
   // Display all hidden files and folders in a directory
   unsigned char all;
   // Display all hiddens files but "." and ".."
   unsigned char almost_all;
   // Only displays directories
   unsigned char dir;
-} Options;
+};
 
-static Options options;
+static struct Options options;
 
 int  checkString   (char*);
 int  isDir         (char*);
