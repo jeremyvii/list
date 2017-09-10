@@ -22,10 +22,10 @@ struct Options {
 static struct Options options;
 
 // Define function prototypes
-int  checkString   (char*);
-int  isDir         (char*);
-int  isDot         (char*);
-void printDirectory(char*);
+int  checkString(char*);
+int  isDir      (char*);
+int  isDot      (char*);
+void list       (char*);
 
 int main(int argc, char** argv) {
   // Initialize opens integer
@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
   // Check if directory name passed is printable and isn't empty
   if (checkString(argv[argc - 1])) {
     // Print directory
-    printDirectory(argv[argc - 1]);
+    list(argv[argc - 1]);
   } else {
     // Display invalid input error
     printf("Input provided is invalid.\n");
@@ -139,7 +139,7 @@ int isDot(char* str) {
  *
  * @return void
  */
-void printDirectory(char* dirName) {
+void list(char* dirName) {
   // Create new directory object
   struct dirent** namelist;
   // Scan directory contents alphabetically
