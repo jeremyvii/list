@@ -26,11 +26,14 @@ struct Options {
 static struct Options options;
 
 // Define function prototypes
-int  checkString(char*);
-int  isDir      (char*);
-int  isDot      (char*);
-void list       (char*);
-void throwError (char*);
+int  checkString (char*);
+int  isDir       (char*);
+int  isDot       (char*);
+int  (*fnPointer)(const struct dirent **a, const struct dirent **b);
+void list        (char*);
+int  noCaseSort  (const struct dirent **a, const struct dirent **b);
+void throwError  (char*);
+
 
 int main(int argc, char** argv) {
   // Initialize opens integer
@@ -165,6 +168,13 @@ void list(char* dirName) {
   }
   // Free file list from memory
   free(namelist);
+}
+
+// TODO: Set case insensitive sorting
+int noCaseSort(const struct dirent** a, const struct dirent** b) {
+  const char* nameA = (*a)->d_name;
+  const char* nameB = (*b)->d_name;
+  return strcmp(nameA, nameB);
 }
 
 /**
