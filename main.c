@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     }
   }
   // Check if directory name passed is printable and isn't empty
-  if (checkString(argv[argc - 1])) {
+  if (argc > 1 && checkString(argv[argc - 1])) {
     // Print directory
     list(argv[argc - 1]);
   } else {
