@@ -1,6 +1,6 @@
-CXXFLAGS:= -g -std=c11 -Wall -Wextra -pedantic -fPIC -DDEBUG=0
+FLAGS:= -g -std=c11 -Wall -Wextra -pedantic -fPIC -DDEBUG=0
 
 default: list
 
 list: 
-	gcc $(CXXFLAGS) main.c
+	gcc $(FLAGS) main.c
