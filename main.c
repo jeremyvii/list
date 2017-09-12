@@ -11,7 +11,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 
-
 // This will be used for storing options based to command. 
 struct Options {
   // Display all hidden files and folders in a directory
@@ -29,11 +28,11 @@ static struct Options options;
 int  checkString (char*);
 int  isDir       (char*);
 int  isDot       (char*);
-int  (*fnPointer)(const struct dirent **a, const struct dirent **b);
+int  (*fnPointer)(const struct dirent**, const struct dirent**);
 void list        (char*);
-int  noCaseSort  (const struct dirent **a, const struct dirent **b);
+int  noCaseSort  (const struct dirent**, const struct dirent**);
+void strToLower  (char*);
 void throwError  (char*);
-
 
 int main(int argc, char** argv) {
   // Initialize opens integer
@@ -148,6 +147,8 @@ int isDot(char* str) {
 void list(char* dirName) {
   // Create new directory object
   struct dirent** namelist;
+  // Pass sort function to funtion pointer
+  fnPointer = &noCaseSort;
   // Scan directory contents alphabetically
   int dir = scandir(dirName, &namelist, NULL, alphasort);
   // Check if directory exists
@@ -172,9 +173,23 @@ void list(char* dirName) {
 
 // TODO: Set case insensitive sorting
 int noCaseSort(const struct dirent** a, const struct dirent** b) {
-  const char* nameA = (*a)->d_name;
-  const char* nameB = (*b)->d_name;
+  char* nameA = (char*) (*a)->d_name;
+  char* nameB = (char*) (*b)->d_name;
+  strToLower(nameA);
+  strToLower(nameB);
   return strcmp(nameA, nameB);
+}
+
+/**
+ * Converts all characters in a string to lowercase
+ *
+ * @return void
+ */
+void strToLower(char* str) {
+  // Loop over character array
+  for (int i = 0; str[i] != '\0'; i++)
+    // Convert character to lowercase
+    putchar(tolower(str[i])); 
 }
 
 /**
