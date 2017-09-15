@@ -187,9 +187,9 @@ int noCaseSort(const struct dirent** a, const struct dirent** b) {
  */
 void strToLower(char* str) {
   // Loop over character array
-  for (int i = 0; str[i] != '\0'; i++)
+  for ( ; *str; ++str)
     // Convert character to lowercase
-    putchar(tolower(str[i])); 
+    *str = tolower(*str);
 }
 
 /**
