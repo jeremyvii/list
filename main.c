@@ -150,7 +150,7 @@ void list(char* dirName) {
   // Pass sort function to funtion pointer
   fnPointer = &noCaseSort;
   // Scan directory contents alphabetically
-  int dir = scandir(dirName, &namelist, NULL, alphasort);
+  int dir = scandir(dirName, &namelist, NULL, fnPointer);
   // Check if directory exists
   if (dir == -1) throwError("Directory does not exist!");
   // Iterate over directory contents
@@ -171,17 +171,31 @@ void list(char* dirName) {
   free(namelist);
 }
 
-// TODO: Set case insensitive sorting
+/**
+ * Runs a case insensitive alphabetic string compare
+ *
+ * This is needed because using alphasort is case sensitive
+ *
+ * @param  const struct dirent** a First directory name to check
+ * @param  const struct dirent** b Second directory name to check
+ *
+ * @return int                     Result of strcmp
+ */
 int noCaseSort(const struct dirent** a, const struct dirent** b) {
+  // Get values to compare, and cast to character array pointer
   char* nameA = (char*) (*a)->d_name;
   char* nameB = (char*) (*b)->d_name;
+  // Convert characters to lowercase
   strToLower(nameA);
   strToLower(nameB);
+  // Compare results
   return strcmp(nameA, nameB);
 }
 
 /**
  * Converts all characters in a string to lowercase
+ * 
+ * @param  char* str String pointer to convert to lowercase
  *
  * @return void
  */
