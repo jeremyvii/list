@@ -8,6 +8,7 @@
 #include <getopt.h>
 #include <string.h>
 #include <dirent.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
 
@@ -25,8 +26,9 @@ struct Options {
 static struct Options options;
 
 // Define function prototypes
+void append      (char*, char);
 int  checkString (char*);
-int  isDir       (char*);
+int  isntDir     (char*);
 int  isDot       (char*);
 int  (*fnPointer)(const struct dirent**, const struct dirent**);
 void list        (char*);
@@ -71,6 +73,23 @@ int main(int argc, char** argv) {
 }
 
 /**
+ * Appends character to the end of a string
+ *
+ * @param char* str The string to be appended too
+ * @param char  c   The character we are appending
+ *
+ * @return void
+ */
+void append(char* str, char c) {
+  // Get strings size
+  int size = strlen(str);
+  // Append character provided to the end of string
+  str[size] = c;
+  // Append the string ternimator
+  str[size + 1] = '\0';
+}
+
+/**
  * Checks if string is printable and not empty
  *
  * @param  char* str Pointer to string to check
@@ -97,18 +116,25 @@ int checkString(char* str) {
   return 1;
 }
 
-int isDir(char* str) {
-  // if (options.dir) {
-  //   // TODO: Set directory functionality
-  //   char currDir[1024];
-  //   getcwd(currDir, sizeof(currDir));
-  //   printf("%s\n", test);
-  //   strcat(dir, str);
-  //   struct stat sb;
-  //   printf("%s\n", dir);
-  //   printf("%d\n", stat(dir, &sb) == 0);
-  //   return stat(dir, &sb) == 0 && S_ISDIR(sb.st_mode);
-  // }
+/**
+ * Checks if given string isn't a directory with stat()
+ *
+ * @param  char* str The file/folder name to check
+ *
+ * @return int       1 if name isn't a directory, otherwise 0.
+ *                   If the "-d" option wasn't passed returns 0 regardless
+ */
+int isntDir(char* str) {
+  // Check if directory flag is set
+  if (options.dir) {
+    // Intialize struct for checking if path is a directory
+    struct stat sb;
+    // Get inode attributes from stat
+    // TODO: Add case for dots, "." and ".."
+    stat(str, &sb);
+    // Check if path is a directory and return results
+    return S_ISREG(sb.st_mode);
+  }
   return 0;
 }
 
@@ -158,7 +184,7 @@ void list(char* dirName) {
     // Check if file is "." or ".."
     if (isDot(namelist[i]->d_name)) {
       // Don't print "." or ".."
-    } else if (isDir(namelist[i]->d_name)) {
+    } else if (isntDir(namelist[i]->d_name)) {
       // Don't display regular files if directory flag is set
     } else {
       // Print file names
