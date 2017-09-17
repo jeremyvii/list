@@ -185,11 +185,14 @@ int noCaseSort(const struct dirent** a, const struct dirent** b) {
   // Get values to compare, and cast to character array pointer
   char* nameA = (char*) (*a)->d_name;
   char* nameB = (char*) (*b)->d_name;
+  // Copy strings so we don't print the lowercased strings in list()
+  char* copyA = strdup(nameA);
+  char* copyB = strdup(nameB);
   // Convert characters to lowercase
-  strToLower(nameA);
-  strToLower(nameB);
+  strToLower(copyA);
+  strToLower(copyB);
   // Compare results
-  return strcmp(nameA, nameB);
+  return strcmp(copyA, copyB);
 }
 
 /**
