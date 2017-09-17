@@ -192,7 +192,11 @@ int noCaseSort(const struct dirent** a, const struct dirent** b) {
   strToLower(copyA);
   strToLower(copyB);
   // Compare results
-  return strcmp(copyA, copyB);
+  int result = strcmp(copyA, copyB);
+  // Free our allocated memory
+  free(copyA);
+  free(copyB);
+  return result;
 }
 
 /**
