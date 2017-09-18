@@ -208,20 +208,17 @@ void list(char* dirName) {
  * @return int                     Result of strcmp
  */
 int noCaseSort(const struct dirent** a, const struct dirent** b) {
-  // Get values to compare, and cast to character array pointer
-  char* nameA = (char*) (*a)->d_name;
-  char* nameB = (char*) (*b)->d_name;
   // Copy strings so we don't print the lowercased strings in list()
-  char* copyA = strdup(nameA);
-  char* copyB = strdup(nameB);
+  char* itemA = strdup((char*) (*a)->d_name);
+  char* itemB = strdup((char*) (*b)->d_name);
   // Convert characters to lowercase
-  strToLower(copyA);
-  strToLower(copyB);
+  strToLower(itemA);
+  strToLower(itemB);
   // Compare results
-  int result = strcmp(copyA, copyB);
+  int result = strcmp(itemA, itemB);
   // Free our allocated memory
-  free(copyA);
-  free(copyB);
+  free(itemA);
+  free(itemB);
   return result;
 }
 
